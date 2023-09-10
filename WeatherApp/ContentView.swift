@@ -10,6 +10,14 @@ import SwiftUI
 struct ContentView: View {
 
     @State private var isNight = false
+    
+    private var weatherForNextFiveDays = [
+        Weather(dayOfWeek: "MON", weatherSymbol: "sun.max.fill", temperature: 74),
+        Weather(dayOfWeek: "TUE", weatherSymbol: "cloud.sun.fill", temperature: 78),
+        Weather(dayOfWeek: "WED", weatherSymbol: "cloud.rain.fill", temperature: 64),
+        Weather(dayOfWeek: "THU", weatherSymbol: "cloud.hail.fill", temperature: 50),
+        Weather(dayOfWeek: "FRI", weatherSymbol: "cloud.snow.fill", temperature: 44),
+    ]
 
     var body: some View {
         ZStack {
@@ -19,27 +27,29 @@ struct ContentView: View {
                 CityWeatherStatus(weatherSymbol: "cloud.sun.fill", temperature: 76)
                 
                 HStack(spacing: 20) {
-                    WeatherDayView(dayOfWeek: "TUE", weatherSymbol: "sun.max.fill", temperature: 74)
+                    ForEach(weatherForNextFiveDays) { weather in
+                        WeatherDayView(dayOfWeek: weather.dayOfWeek, weatherSymbol: weather.weatherSymbol, temperature: weather.temperature)
+                    }
                     
-                    WeatherDayView(dayOfWeek: "WED", weatherSymbol: "cloud.sun.fill", temperature: 78)
-                    
-                    WeatherDayView(dayOfWeek: "THU", weatherSymbol: "cloud.rain.fill", temperature: 64)
-                    
-                    WeatherDayView(dayOfWeek: "FRI", weatherSymbol: "cloud.hail.fill", temperature: 50)
-                    
-                    WeatherDayView(dayOfWeek: "SAT", weatherSymbol: "cloud.snow.fill", temperature: 44)
                 }
                 Spacer()
                 
                 Button {
                     isNight.toggle()
                 } label: {
-                   WeatherButton(title: "Change Day Time", textColor: .white, backgroudColor: .mint)
+                   WeatherButton(title: "Change Day Time", textColor: .blue, backgroudColor: .white)
                 }
                 Spacer()
             }
         }
     }
+}
+
+struct Weather: Identifiable {
+    var dayOfWeek: String
+    var weatherSymbol: String
+    var temperature: Int
+    var id: String { dayOfWeek }
 }
 
 struct CityTextView: View {
@@ -70,30 +80,14 @@ struct CityWeatherStatus: View {
     }
 }
 
-struct WeatherButton: View {
-    var title: String
-    var textColor: Color
-    var backgroudColor: Color
-    var body: some View {
-         Text(title)
-            .frame(width: 280, height: 50)
-            .background(backgroudColor.gradient)
-            .font(.system(size: 20, weight: .bold, design: .default))
-            .cornerRadius(10)
-            .foregroundColor(textColor)
-    }
-}
 
 struct BackgroudView: View {
     var isNight: Bool
     var body: some View {
-        //LinearGradient(gradient: Gradient(colors: [isNight ? .black : .blue, isNight ? .gray : Color("lightBlue")]),
-        //    startPoint: .topLeading, endPoint: .bottomTrailing)
-         //   .ignoresSafeArea(.all)
+        LinearGradient(gradient: Gradient(colors: [isNight ? .black : .blue, isNight ? .gray : Color("lightBlue")]),
+            startPoint: .topLeading, endPoint: .bottomTrailing)
+            .ignoresSafeArea(.all)
          
-         ContainerRelativeShape()
-            .fill(isNight ? Color.black.gradient : Color.blue.gradient)
-            .ignoresSafeArea()
     }
 }
 
