@@ -34,7 +34,7 @@ struct ContentView: View {
                 Button {
                     isNight.toggle()
                 } label: {
-                   WeatherButton(title: "Change Day Time", textColor: .blue, backgroudColor: .white)
+                   WeatherButton(title: "Change Day Time", textColor: .white, backgroudColor: .mint)
                 }
                 Spacer()
             }
@@ -77,7 +77,7 @@ struct WeatherButton: View {
     var body: some View {
          Text(title)
             .frame(width: 280, height: 50)
-            .background(backgroudColor)
+            .background(backgroudColor.gradient)
             .font(.system(size: 20, weight: .bold, design: .default))
             .cornerRadius(10)
             .foregroundColor(textColor)
@@ -87,9 +87,13 @@ struct WeatherButton: View {
 struct BackgroudView: View {
     var isNight: Bool
     var body: some View {
-        LinearGradient(gradient: Gradient(colors: [isNight ? .black : .blue, isNight ? .gray : Color("lightBlue")]),
-            startPoint: .topLeading, endPoint: .bottomTrailing)
-            .ignoresSafeArea(.all)
+        //LinearGradient(gradient: Gradient(colors: [isNight ? .black : .blue, isNight ? .gray : Color("lightBlue")]),
+        //    startPoint: .topLeading, endPoint: .bottomTrailing)
+         //   .ignoresSafeArea(.all)
+         
+         ContainerRelativeShape()
+            .fill(isNight ? Color.black.gradient : Color.blue.gradient)
+            .ignoresSafeArea()
     }
 }
 
@@ -102,9 +106,8 @@ struct WeatherDayView: View {
         VStack(spacing: 4) {
             Text(dayOfWeek)
             Image(systemName: weatherSymbol)
-                .symbolRenderingMode(.palette)
+                .symbolRenderingMode(.multicolor)
                 .resizable()
-                .foregroundStyle(.pink, .orange, .green)
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 40, height: 40)
             Text("\(temperature)°")
