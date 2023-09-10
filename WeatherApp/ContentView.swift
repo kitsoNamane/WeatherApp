@@ -102,8 +102,9 @@ struct WeatherDayView: View {
         VStack(spacing: 4) {
             Text(dayOfWeek)
             Image(systemName: weatherSymbol)
-                .renderingMode(.original)
+                .symbolRenderingMode(.palette)
                 .resizable()
+                .foregroundStyle(.pink, .orange, .green)
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 40, height: 40)
             Text("\(temperature)°")
