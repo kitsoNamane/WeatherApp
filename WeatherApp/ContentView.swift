@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
+
+    @State private var isNight = false
+
     var body: some View {
         ZStack {
-            BackgroudView(topColor: .blue, bottomColor: Color("lightBlue"))
+            BackgroudView(topColor: isNight ? .black : .blue,
+            bottomColor: isNight ? .gray : Color("lightBlue"))
             VStack(alignment: .center) {
                 CityTextView(cityName: "Cupertino, CA")
                 CityWeatherStatus(weatherSymbol: "cloud.sun.fill", temperature: 76)
@@ -29,7 +33,7 @@ struct ContentView: View {
                 Spacer()
                 
                 Button {
-                    print("tapped")
+                    isNight.toggle()
                 } label: {
                    WeatherButton(title: "Change Day Time", textColor: .blue, backgroudColor: .white)
                 }
@@ -54,17 +58,16 @@ struct CityWeatherStatus: View {
     var temperature: Int
     var body: some View {
         VStack(spacing: 8) {
-                    Image(systemName: weatherSymbol)
-                    .renderingMode(.original)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 180, height: 180)
-                    
-                    Text("\(temperature)°")
-                    .font(.system(size: 70, weight: .medium))
-                    .foregroundStyle(.white)
-                }
-                .padding(.bottom, 40)
+            Image(systemName: weatherSymbol)
+                .renderingMode(.original)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 180, height: 180)
+            Text("\(temperature)°")
+                .font(.system(size: 70, weight: .medium))
+                .foregroundStyle(.white)
+        }
+        .padding(.bottom, 40)
     }
 }
 
@@ -101,10 +104,10 @@ struct WeatherDayView: View {
         VStack(spacing: 4) {
             Text(dayOfWeek)
             Image(systemName: weatherSymbol)
-            .renderingMode(.original)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 40, height: 40)
+                .renderingMode(.original)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 40, height: 40)
             Text("\(temperature)°")
         }
         .foregroundColor(.white)
